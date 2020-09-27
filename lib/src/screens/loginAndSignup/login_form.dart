@@ -5,6 +5,8 @@ import 'package:meditation_app/blocs/loginBloc/login_bloc.dart';
 import 'package:meditation_app/config/ui_icons.dart';
 import 'package:meditation_app/repositorys/user_repo.dart';
 import 'package:meditation_app/config/app_config.dart' as config;
+import 'package:meditation_app/src/models/route_argument.dart';
+import 'package:meditation_app/src/widgets/google_login_button.dart';
 
 class LoginForm extends StatefulWidget {
   final UserRepository _userRepository;
@@ -43,7 +45,7 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener(
+    return BlocListener<LoginBloc, LoginState>(
       listener: (BuildContext context, state) {
         if (state.isFailure) {
           Scaffold.of(context)
@@ -77,7 +79,7 @@ class _LoginFormState extends State<LoginForm> {
           BlocProvider.of<AuthenticationBloc>(context).add(LoggedIn());
         }
       },
-      child: BlocBuilder(
+      child: BlocBuilder<LoginBloc, LoginState>(
         builder: (context, state) {
           return Scaffold(
             backgroundColor: config.Colors().accentColor(1),
@@ -89,9 +91,9 @@ class _LoginFormState extends State<LoginForm> {
                       Container(
                         width: double.infinity,
                         padding:
-                        EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+                            EdgeInsets.symmetric(vertical: 30, horizontal: 20),
                         margin:
-                        EdgeInsets.symmetric(vertical: 65, horizontal: 50),
+                            EdgeInsets.symmetric(vertical: 65, horizontal: 50),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           color: config.Colors().mainColor(0.6),
@@ -100,9 +102,9 @@ class _LoginFormState extends State<LoginForm> {
                       Container(
                         width: double.infinity,
                         padding:
-                        EdgeInsets.symmetric(vertical: 30, horizontal: 30),
+                            EdgeInsets.symmetric(vertical: 30, horizontal: 30),
                         margin:
-                        EdgeInsets.symmetric(vertical: 85, horizontal: 20),
+                            EdgeInsets.symmetric(vertical: 85, horizontal: 20),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             color: config.Colors().mainColor(1),
@@ -119,14 +121,16 @@ class _LoginFormState extends State<LoginForm> {
                                 style: Theme.of(context).textTheme.display3),
                             SizedBox(height: 20),
                             TextFormField(
-                              style:
-                              TextStyle(color: Theme.of(context).accentColor),
+                              style: TextStyle(
+                                  color: Theme.of(context).accentColor),
                               keyboardType: TextInputType.emailAddress,
                               controller: _emailController,
                               autovalidate: true,
                               autocorrect: false,
                               validator: (_) {
-                                return !state.isEmailValid ? 'Invalid Email' : null;
+                                return !state.isEmailValid
+                                    ? 'Invalid Email'
+                                    : null;
                               },
                               decoration: InputDecoration(
                                 hintText: 'Email Address',
@@ -134,9 +138,10 @@ class _LoginFormState extends State<LoginForm> {
                                     .textTheme
                                     .body1
                                     .merge(
-                                  TextStyle(
-                                      color: config.Colors().accentColor(1)),
-                                ),
+                                      TextStyle(
+                                          color:
+                                              config.Colors().accentColor(1)),
+                                    ),
                                 enabledBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Theme.of(context)
@@ -153,15 +158,17 @@ class _LoginFormState extends State<LoginForm> {
                             ),
                             SizedBox(height: 20),
                             TextFormField(
-                              style:
-                              TextStyle(color: Theme.of(context).accentColor),
+                              style: TextStyle(
+                                  color: Theme.of(context).accentColor),
                               keyboardType: TextInputType.text,
                               obscureText: !_showPassword,
                               controller: _passwordController,
                               autovalidate: true,
                               autocorrect: false,
                               validator: (_) {
-                                return !state.isPasswordValid ? 'Invalid Password' : null;
+                                return !state.isPasswordValid
+                                    ? 'Invalid Password'
+                                    : null;
                               },
                               decoration: InputDecoration(
                                 hintText: 'Password',
@@ -169,9 +176,9 @@ class _LoginFormState extends State<LoginForm> {
                                     .textTheme
                                     .body1
                                     .merge(
-                                  TextStyle(
-                                      color: Theme.of(context).accentColor),
-                                ),
+                                      TextStyle(
+                                          color: Theme.of(context).accentColor),
+                                    ),
                                 enabledBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Theme.of(context)
@@ -213,13 +220,16 @@ class _LoginFormState extends State<LoginForm> {
                             FlatButton(
                               padding: EdgeInsets.symmetric(
                                   vertical: 12, horizontal: 70),
-                              onPressed: () => isLoginButtonEnabled(state) ? _onFormSubmitted() : null,
+                              onPressed: () => isLoginButtonEnabled(state)
+                                  ? _onFormSubmitted()
+                                  : null,
                               child: Text(
                                 'Login',
                                 style: Theme.of(context).textTheme.title.merge(
-                                  TextStyle(
-                                      color: Theme.of(context).primaryColor),
-                                ),
+                                      TextStyle(
+                                          color:
+                                              Theme.of(context).primaryColor),
+                                    ),
                               ),
                               color: Theme.of(context).accentColor,
                               shape: StadiumBorder(),
@@ -230,8 +240,7 @@ class _LoginFormState extends State<LoginForm> {
                               style: Theme.of(context).textTheme.body1,
                             ),
                             SizedBox(height: 20),
-                            //Todo Socials Login
-                            
+                            GoogleLoginButton()
                           ],
                         ),
                       ),
@@ -239,13 +248,16 @@ class _LoginFormState extends State<LoginForm> {
                   ),
                   FlatButton(
                     onPressed: () {
-                      Navigator.of(context).pushNamed('/SignUp');
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                          '/registerScreen', (Route<dynamic> route) => false,
+                          arguments:
+                              RouteArgument(argumentsList: [_userRepository]));
                     },
                     child: RichText(
                       text: TextSpan(
                         style: Theme.of(context).textTheme.title.merge(
-                          TextStyle(color: Theme.of(context).primaryColor),
-                        ),
+                              TextStyle(color: Theme.of(context).primaryColor),
+                            ),
                         children: [
                           TextSpan(text: 'Don\'t have an account ?'),
                           TextSpan(
@@ -258,7 +270,7 @@ class _LoginFormState extends State<LoginForm> {
                 ],
               ),
             ),
-          ),
+          );
         },
       ),
     );

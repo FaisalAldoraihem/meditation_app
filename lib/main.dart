@@ -1,12 +1,16 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meditation_app/repositorys/user_repo.dart';
+import 'package:meditation_app/src/screens/loginAndSignup/login_screen.dart';
 import 'blocs/authBloc/authentication_bloc.dart';
 import 'package:meditation_app/blocs/simple_bloc_delegate.dart';
 
 import 'src/screens/splash_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   Bloc.observer = SimpleBlocDelegate();
   runApp(App());
 }
@@ -23,7 +27,7 @@ class _AppState extends State<App> {
   void initState() {
     super.initState();
     _authenticationBloc = AuthenticationBloc(userRepository: _userRepository);
-    BlocProvider.of<AuthenticationBloc>(context).add(AppStarted());
+    _authenticationBloc.add(AppStarted());
   }
 
   @override
@@ -35,11 +39,11 @@ class _AppState extends State<App> {
           builder: (BuildContext context, AuthenticationState state) {
             if (state is Uninitialized) {
               return MeditationSplashScreen();
+            } else if (state is Unauthenticated) {
+              return LoginScreen.main(userRepository: _userRepository);
+            } else {
+              return Container();
             }
-            if (state is Authenticated) {
-              return Container(child: Text("hello"));
-            }
-            return Container();
           },
         ),
       ),
