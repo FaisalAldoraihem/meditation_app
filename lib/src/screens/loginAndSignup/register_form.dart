@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meditation_app/blocs/authBloc/authentication_bloc.dart';
 import 'package:meditation_app/blocs/registerBloc/register_bloc.dart';
 import 'package:meditation_app/config/ui_icons.dart';
-import 'package:meditation_app/config/app_config.dart' as config;
 import 'package:meditation_app/repositorys/user_repo.dart';
 import 'package:meditation_app/src/models/route_argument.dart';
 
@@ -24,17 +23,17 @@ class _RegisterFormState extends State<RegisterForm> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _passwordConfirmController =
       TextEditingController();
+  final FocusNode _emailFocus = FocusNode();
+  final FocusNode _passFocus = FocusNode();
+  final FocusNode _confirmFocus = FocusNode();
 
   RegisterBloc _registerBloc;
 
   bool get isPopulated =>
       _emailController.text.isNotEmpty && _passwordController.text.isNotEmpty;
 
-  bool get passMatch =>
-      _passwordController.text == _passwordConfirmController.text;
-
   bool isRegisterButtonEnabled(RegisterState state) {
-    return state.isFormValid && isPopulated && !state.isSubmitting && passMatch;
+    return state.isFormValid && isPopulated && !state.isSubmitting;
   }
 
   UserRepository get _userRepository => widget._userRepository;
@@ -45,7 +44,6 @@ class _RegisterFormState extends State<RegisterForm> {
     _registerBloc = BlocProvider.of<RegisterBloc>(context);
     _emailController.addListener(_onEmailChanged);
     _passwordController.addListener(_onPasswordChanged);
-    _passwordConfirmController.addListener(_onPasswordChanged);
   }
 
   @override
@@ -87,7 +85,7 @@ class _RegisterFormState extends State<RegisterForm> {
             ),
           );
       }
-    }, child: BlocBuilder(
+    }, child: BlocBuilder<RegisterBloc, RegisterState>(
       builder: (context, state) {
         return Scaffold(
           backgroundColor: Theme.of(context).accentColor,
@@ -104,7 +102,7 @@ class _RegisterFormState extends State<RegisterForm> {
                           EdgeInsets.symmetric(vertical: 65, horizontal: 50),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        color: config.Colors().mainColor(.6),
+                        color: Theme.of(context).primaryColor.withOpacity(0.6),
                       ),
                     ),
                     Container(
@@ -115,10 +113,11 @@ class _RegisterFormState extends State<RegisterForm> {
                           EdgeInsets.symmetric(vertical: 85, horizontal: 20),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        color: config.Colors().mainColor(1),
+                        color: Theme.of(context).primaryColor,
                         boxShadow: [
                           BoxShadow(
-                              color: config.Colors().accentColor(.2),
+                              color:
+                                  Theme.of(context).hintColor.withOpacity(0.2),
                               offset: Offset(0, 10),
                               blurRadius: 20)
                         ],
@@ -141,6 +140,12 @@ class _RegisterFormState extends State<RegisterForm> {
                                   ? 'Invalid Email'
                                   : null;
                             },
+                            focusNode: _emailFocus,
+                            onFieldSubmitted: (term) {
+                              _fieldFocusChange(
+                                  context, _emailFocus, _passFocus);
+                            },
+                            textInputAction: TextInputAction.next,
                             decoration: InputDecoration(
                               hintText: 'Email Address',
                               hintStyle: Theme.of(context)
@@ -178,6 +183,12 @@ class _RegisterFormState extends State<RegisterForm> {
                                   ? 'Invalid Password'
                                   : null;
                             },
+                            focusNode: _passFocus,
+                            onFieldSubmitted: (term) {
+                              _fieldFocusChange(
+                                  context, _passFocus, _confirmFocus);
+                            },
+                            textInputAction: TextInputAction.next,
                             decoration: InputDecoration(
                               hintText: 'Password',
                               hintStyle: Theme.of(context)
@@ -205,7 +216,9 @@ class _RegisterFormState extends State<RegisterForm> {
                                     _showPassword = !_showPassword;
                                   });
                                 },
-                                color: config.Colors().accentColor(.4),
+                                color: Theme.of(context)
+                                    .accentColor
+                                    .withOpacity(.4),
                                 icon: Icon(_showPassword
                                     ? Icons.visibility_off
                                     : Icons.visibility),
@@ -215,33 +228,40 @@ class _RegisterFormState extends State<RegisterForm> {
                           SizedBox(height: 20),
                           TextFormField(
                             style: TextStyle(
-                                color: config.Colors().accentColor(1)),
+                                color: Theme.of(context)
+                                    .accentColor
+                                    .withOpacity(1)),
                             keyboardType: TextInputType.text,
                             controller: _passwordConfirmController,
                             obscureText: !_showPassword,
                             autocorrect: false,
                             autovalidate: true,
-                            validator: (_) {
+                            /*validator: (_) {
                               return (_passwordController.text ==
                                       _passwordConfirmController.text)
                                   ? 'Passwords Don\'t match'
                                   : null;
-                            },
+                            },*/
+                            focusNode: _confirmFocus,
                             decoration: InputDecoration(
                               hintText: 'Confirm Password',
-                              hintStyle: Theme.of(context)
-                                  .textTheme
-                                  .body1
-                                  .merge(
-                                    TextStyle(
-                                        color: config.Colors().accentColor(1)),
-                                  ),
+                              hintStyle:
+                                  Theme.of(context).textTheme.body1.merge(
+                                        TextStyle(
+                                            color: Theme.of(context)
+                                                .accentColor
+                                                .withOpacity(1)),
+                                      ),
                               enabledBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(
-                                      color: config.Colors().accentColor(.2))),
+                                      color: Theme.of(context)
+                                          .accentColor
+                                          .withOpacity(.2))),
                               focusedBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(
-                                      color: config.Colors().accentColor(1))),
+                                      color: Theme.of(context)
+                                          .accentColor
+                                          .withOpacity(1))),
                               prefixIcon: Icon(
                                 UiIcons.padlock_1,
                                 color: Theme.of(context).accentColor,
@@ -252,7 +272,9 @@ class _RegisterFormState extends State<RegisterForm> {
                                     _showPassword = !_showPassword;
                                   });
                                 },
-                                color: config.Colors().accentColor(.2),
+                                color: Theme.of(context)
+                                    .accentColor
+                                    .withOpacity(.2),
                                 icon: Icon(_showPassword
                                     ? Icons.visibility_off
                                     : Icons.visibility),
@@ -270,7 +292,7 @@ class _RegisterFormState extends State<RegisterForm> {
                               'Sign Up',
                               style: Theme.of(context).textTheme.title.merge(
                                     TextStyle(
-                                        color: config.Colors().mainColor(1)),
+                                        color: Theme.of(context).primaryColor),
                                   ),
                             ),
                             color: Theme.of(context).accentColor,
@@ -291,13 +313,17 @@ class _RegisterFormState extends State<RegisterForm> {
                 FlatButton(
                   onPressed: () {
                     Navigator.of(context).pushNamedAndRemoveUntil(
-                        '/registerScreen', (Route<dynamic> route) => false,
-                        arguments: [_userRepository]);
+                        '/loginScreen', (Route<dynamic> route) => false,
+                        arguments:
+                            RouteArgument(argumentsList: [_userRepository]));
                   },
                   child: RichText(
                     text: TextSpan(
                       style: Theme.of(context).textTheme.title.merge(
-                            TextStyle(color: config.Colors().mainColor(1)),
+                            TextStyle(
+                                color: Theme.of(context)
+                                    .accentColor
+                                    .withOpacity(1)),
                           ),
                       children: [
                         TextSpan(text: 'Already have an account ?'),
@@ -342,5 +368,11 @@ class _RegisterFormState extends State<RegisterForm> {
         password: _passwordController.text,
       ),
     );
+  }
+
+  _fieldFocusChange(
+      BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
+    currentFocus.unfocus();
+    FocusScope.of(context).requestFocus(nextFocus);
   }
 }

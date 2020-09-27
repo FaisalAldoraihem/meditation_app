@@ -4,7 +4,6 @@ import 'package:meditation_app/blocs/authBloc/authentication_bloc.dart';
 import 'package:meditation_app/blocs/loginBloc/login_bloc.dart';
 import 'package:meditation_app/config/ui_icons.dart';
 import 'package:meditation_app/repositorys/user_repo.dart';
-import 'package:meditation_app/config/app_config.dart' as config;
 import 'package:meditation_app/src/models/route_argument.dart';
 import 'package:meditation_app/src/widgets/google_login_button.dart';
 
@@ -23,6 +22,8 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final FocusNode _emailFocus = FocusNode();
+  final FocusNode _passFocus = FocusNode();
   LoginBloc _loginBloc;
   bool _showPassword = false;
 
@@ -82,7 +83,7 @@ class _LoginFormState extends State<LoginForm> {
       child: BlocBuilder<LoginBloc, LoginState>(
         builder: (context, state) {
           return Scaffold(
-            backgroundColor: config.Colors().accentColor(1),
+            backgroundColor: Colors.cyan,
             body: SingleChildScrollView(
               child: Column(
                 children: [
@@ -96,7 +97,8 @@ class _LoginFormState extends State<LoginForm> {
                             EdgeInsets.symmetric(vertical: 65, horizontal: 50),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
-                          color: config.Colors().mainColor(0.6),
+                          color:
+                              Theme.of(context).primaryColor.withOpacity(0.6),
                         ),
                       ),
                       Container(
@@ -107,10 +109,12 @@ class _LoginFormState extends State<LoginForm> {
                             EdgeInsets.symmetric(vertical: 85, horizontal: 20),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
-                            color: config.Colors().mainColor(1),
+                            color: Theme.of(context).primaryColor,
                             boxShadow: [
                               BoxShadow(
-                                  color: config.Colors().accentDarkColor(.2),
+                                  color: Theme.of(context)
+                                      .hintColor
+                                      .withOpacity(0.2),
                                   offset: Offset(0, 10),
                                   blurRadius: 20)
                             ]),
@@ -132,6 +136,12 @@ class _LoginFormState extends State<LoginForm> {
                                     ? 'Invalid Email'
                                     : null;
                               },
+                              focusNode: _emailFocus,
+                              onFieldSubmitted: (term) {
+                                _fieldFocusChange(
+                                    context, _emailFocus, _passFocus);
+                              },
+                              textInputAction: TextInputAction.next,
                               decoration: InputDecoration(
                                 hintText: 'Email Address',
                                 hintStyle: Theme.of(context)
@@ -139,8 +149,7 @@ class _LoginFormState extends State<LoginForm> {
                                     .body1
                                     .merge(
                                       TextStyle(
-                                          color:
-                                              config.Colors().accentColor(1)),
+                                          color: Theme.of(context).accentColor),
                                     ),
                                 enabledBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(
@@ -170,6 +179,7 @@ class _LoginFormState extends State<LoginForm> {
                                     ? 'Invalid Password'
                                     : null;
                               },
+                              focusNode: _passFocus,
                               decoration: InputDecoration(
                                 hintText: 'Password',
                                 hintStyle: Theme.of(context)
@@ -213,7 +223,10 @@ class _LoginFormState extends State<LoginForm> {
                               },
                               child: Text(
                                 'Forgot your password ?',
-                                style: Theme.of(context).textTheme.body1,
+                                style: Theme.of(context).textTheme.body1.merge(
+                                      TextStyle(
+                                          color: Theme.of(context).accentColor),
+                                    ),
                               ),
                             ),
                             SizedBox(height: 30),
@@ -237,7 +250,10 @@ class _LoginFormState extends State<LoginForm> {
                             SizedBox(height: 50),
                             Text(
                               'Or using social media',
-                              style: Theme.of(context).textTheme.body1,
+                              style: Theme.of(context).textTheme.body1.merge(
+                                    TextStyle(
+                                        color: Theme.of(context).accentColor),
+                                  ),
                             ),
                             SizedBox(height: 20),
                             GoogleLoginButton()
@@ -302,5 +318,11 @@ class _LoginFormState extends State<LoginForm> {
         password: _passwordController.text,
       ),
     );
+  }
+
+  _fieldFocusChange(
+      BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
+    currentFocus.unfocus();
+    FocusScope.of(context).requestFocus(nextFocus);
   }
 }
