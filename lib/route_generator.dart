@@ -15,6 +15,9 @@ class RouteGenerator {
         return MaterialPageRoute(
             builder: (_) =>
                 RegisterScreen(routeArgument: args as RouteArgument));
+
+      case '/MainScreen':
+        return MaterialPageRoute(builder: (_) => RegisterScreen());
     }
   }
 }

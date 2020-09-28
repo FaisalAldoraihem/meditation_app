@@ -32,8 +32,10 @@ class _RegisterFormState extends State<RegisterForm> {
   bool get isPopulated =>
       _emailController.text.isNotEmpty && _passwordController.text.isNotEmpty;
 
+  bool get passMatch => _emailController.text == _passwordController.text;
+
   bool isRegisterButtonEnabled(RegisterState state) {
-    return state.isFormValid && isPopulated && !state.isSubmitting;
+    return state.isFormValid && isPopulated && !state.isSubmitting && passMatch;
   }
 
   UserRepository get _userRepository => widget._userRepository;
@@ -236,12 +238,12 @@ class _RegisterFormState extends State<RegisterForm> {
                             obscureText: !_showPassword,
                             autocorrect: false,
                             autovalidate: true,
-                            /*validator: (_) {
+                            validator: (_) {
                               return (_passwordController.text ==
                                       _passwordConfirmController.text)
                                   ? 'Passwords Don\'t match'
                                   : null;
-                            },*/
+                            },
                             focusNode: _confirmFocus,
                             decoration: InputDecoration(
                               hintText: 'Confirm Password',
@@ -322,7 +324,7 @@ class _RegisterFormState extends State<RegisterForm> {
                       style: Theme.of(context).textTheme.title.merge(
                             TextStyle(
                                 color: Theme.of(context)
-                                    .accentColor
+                                    .primaryColor
                                     .withOpacity(1)),
                           ),
                       children: [

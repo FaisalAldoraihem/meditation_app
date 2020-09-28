@@ -39,8 +39,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return BlocProvider<RegisterBloc>(
       create: (BuildContext context) => _registerBloc,
-      child: RegisterForm(
-        userRepository: _userRepository,
+      child: Scaffold(
+        body: RegisterForm(
+          userRepository: _userRepository,
+        ),
       ),
     );
   }

@@ -40,8 +40,10 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return BlocProvider<LoginBloc>(
       create: (BuildContext context) => _loginBloc,
-      child: LoginForm(
-        userRepository: _userRepository,
+      child: Scaffold(
+        body: LoginForm(
+          userRepository: _userRepository,
+        ),
       ),
     );
   }
