@@ -58,6 +58,15 @@ class S {
     );
   }
 
+  String get breathingMeditationType {
+    return Intl.message(
+      'Type Of Meditation',
+      name: 'meditationType',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get beginButton {
     return Intl.message(
       'Begin',

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:meditation_app/src/models/route_argument.dart';
+import 'package:meditation_app/src/screens/about_screen.dart';
 import 'package:meditation_app/src/screens/loginAndSignup/login_screen.dart';
 import 'package:meditation_app/src/screens/loginAndSignup/register_screen.dart';
+import 'package:meditation_app/src/screens/mainScreens/main_screen.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -17,7 +19,10 @@ class RouteGenerator {
                 RegisterScreen(routeArgument: args as RouteArgument));
 
       case '/MainScreen':
-        return MaterialPageRoute(builder: (_) => RegisterScreen());
+        return MaterialPageRoute(builder: (_) => MainScreen());
+
+      case '/aboutScreen':
+        return MaterialPageRoute(builder: (_) => AboutScreen());
     }
   }
 }

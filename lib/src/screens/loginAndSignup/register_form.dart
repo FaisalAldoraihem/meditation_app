@@ -35,7 +35,7 @@ class _RegisterFormState extends State<RegisterForm> {
   bool get passMatch => _emailController.text == _passwordController.text;
 
   bool isRegisterButtonEnabled(RegisterState state) {
-    return state.isFormValid && isPopulated && !state.isSubmitting && passMatch;
+    return state.isFormValid && isPopulated && !state.isSubmitting;
   }
 
   UserRepository get _userRepository => widget._userRepository;
@@ -69,7 +69,6 @@ class _RegisterFormState extends State<RegisterForm> {
       }
       if (state.isSuccess) {
         BlocProvider.of<AuthenticationBloc>(context).add(LoggedIn());
-        Navigator.of(context).pop();
       }
       if (state.isFailure) {
         Scaffold.of(context)
@@ -239,7 +238,7 @@ class _RegisterFormState extends State<RegisterForm> {
                             autocorrect: false,
                             autovalidate: true,
                             validator: (_) {
-                              return (_passwordController.text ==
+                              return !(_passwordController.text ==
                                       _passwordConfirmController.text)
                                   ? 'Passwords Don\'t match'
                                   : null;

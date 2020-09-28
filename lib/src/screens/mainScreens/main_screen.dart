@@ -98,16 +98,16 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                         style: Theme.of(context).textTheme.headline6,
                       ),
                       IconButton(
-                          icon: Icon(
-                            UiIcons.information,
-                            color: Theme.of(context)
-                                .iconTheme
-                                .color
-                                .withOpacity(0.25),
-                          ),
-                          onPressed: () {
-                            //todo about/contact screen
-                          }),
+                        icon: Icon(
+                          UiIcons.information,
+                          color: Theme.of(context)
+                              .iconTheme
+                              .color
+                              .withOpacity(0.25),
+                        ),
+                        onPressed: () =>
+                            Navigator.of(context).pushNamed('/aboutScreen'),
+                      ),
                     ],
                   ),
                 ),
@@ -193,6 +193,14 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                             value:
                                 Provider.of<MeditationModel>(context).isZenMode,
                           ),
+                        ),
+                        SettingsCard(
+                          title: Text(
+                            S.of(context).breathingMeditationType,
+                            style: Theme.of(context).textTheme.subtitle1,
+                          ),
+                          leading: Icon(UiIcons.planet_earth),
+                          trailing: cupertino.Icon(Icons.arrow_right),
                         ),
                       ],
                     ),
