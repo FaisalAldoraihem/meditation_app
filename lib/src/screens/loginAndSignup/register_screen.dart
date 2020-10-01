@@ -2,19 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meditation_app/blocs/registerBloc/register_bloc.dart';
 import 'package:meditation_app/repositorys/user_repo.dart';
-import 'package:meditation_app/src/models/route_argument.dart';
 import 'package:meditation_app/src/screens/loginAndSignup/register_form.dart';
 
 class RegisterScreen extends StatefulWidget {
-  UserRepository _userRepository;
+  final UserRepository _userRepository;
 
-  RegisterScreen({Key key, @required RouteArgument routeArgument})
-      : assert(routeArgument != null),
-        super(key: key) {
-    _userRepository = routeArgument.argumentsList[0] as UserRepository;
-  }
-
-  RegisterScreen.main({Key key, @required UserRepository userRepository})
+  RegisterScreen({Key key, @required UserRepository userRepository})
       : assert(userRepository != null),
         _userRepository = userRepository,
         super(key: key);

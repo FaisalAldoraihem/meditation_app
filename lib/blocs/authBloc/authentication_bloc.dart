@@ -29,6 +29,10 @@ class AuthenticationBloc
       yield* _mapLoggedInToState();
     } else if (event is LoggedOut) {
       yield* _mapLoggedOutToState();
+    } else if (event is UserRegister) {
+      yield Register();
+    } else if (event is UserLogin) {
+      yield Unauthenticated();
     }
   }
 
@@ -52,7 +56,7 @@ class AuthenticationBloc
   }
 
   Stream<AuthenticationState> _mapLoggedOutToState() async* {
-    yield Unauthenticated();
     _userRepository.signOut();
+    yield Unauthenticated();
   }
 }

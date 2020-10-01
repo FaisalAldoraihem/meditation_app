@@ -67,9 +67,6 @@ class _RegisterFormState extends State<RegisterForm> {
             ),
           );
       }
-      if (state.isSuccess) {
-        BlocProvider.of<AuthenticationBloc>(context).add(LoggedIn());
-      }
       if (state.isFailure) {
         Scaffold.of(context)
           ..hideCurrentSnackBar()
@@ -85,6 +82,9 @@ class _RegisterFormState extends State<RegisterForm> {
               backgroundColor: Colors.red,
             ),
           );
+      }
+      if (state.isSuccess) {
+        BlocProvider.of<AuthenticationBloc>(context).add(LoggedIn());
       }
     }, child: BlocBuilder<RegisterBloc, RegisterState>(
       builder: (context, state) {
@@ -313,10 +313,8 @@ class _RegisterFormState extends State<RegisterForm> {
                 ),
                 FlatButton(
                   onPressed: () {
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                        '/loginScreen', (Route<dynamic> route) => false,
-                        arguments:
-                            RouteArgument(argumentsList: [_userRepository]));
+                    BlocProvider.of<AuthenticationBloc>(context)
+                        .add(UserLogin());
                   },
                   child: RichText(
                     text: TextSpan(

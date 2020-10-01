@@ -24,3 +24,17 @@ class LoggedOut extends AuthenticationEvent {
   @override
   List<Object> get props => throw UnimplementedError();
 }
+
+class UserRegister extends AuthenticationEvent {
+  @override
+  String toString() => 'LoggedOut';
+  @override
+  List<Object> get props => throw UnimplementedError();
+}
+
+class UserLogin extends AuthenticationEvent {
+  @override
+  String toString() => 'LoggedOut';
+  @override
+  List<Object> get props => throw UnimplementedError();
+}

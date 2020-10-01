@@ -27,14 +27,6 @@ class AboutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomAppBar(
-        child: IconButton(
-          icon: Icon(UiIcons.download),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-      ),
       body: SafeArea(
         child: Center(
           child: Container(

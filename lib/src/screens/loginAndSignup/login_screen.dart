@@ -2,19 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meditation_app/blocs/loginBloc/login_bloc.dart';
 import 'package:meditation_app/repositorys/user_repo.dart';
-import 'package:meditation_app/src/models/route_argument.dart';
 import 'package:meditation_app/src/screens/loginAndSignup/login_form.dart';
 
 class LoginScreen extends StatefulWidget {
-  UserRepository _userRepository;
+  final UserRepository _userRepository;
 
-  LoginScreen({Key key, @required RouteArgument routeArgument})
-      : assert(routeArgument != null),
-        super(key: key) {
-    _userRepository = routeArgument.argumentsList[0] as UserRepository;
-  }
-
-  LoginScreen.main({Key key, @required UserRepository userRepository})
+  LoginScreen({Key key, @required UserRepository userRepository})
       : assert(userRepository != null),
         _userRepository = userRepository,
         super(key: key);

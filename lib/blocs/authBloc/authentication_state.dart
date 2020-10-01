@@ -34,3 +34,10 @@ class Unauthenticated extends AuthenticationState {
   @override
   List<Object> get props => throw UnimplementedError();
 }
+
+class Register extends AuthenticationState {
+  @override
+  String toString() => 'Register';
+  @override
+  List<Object> get props => throw UnimplementedError();
+}

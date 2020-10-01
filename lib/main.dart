@@ -4,10 +4,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meditation_app/I10n/l10n.dart';
 import 'package:meditation_app/constants/settings.dart';
-import 'package:meditation_app/page_routes.dart';
 import 'package:meditation_app/repositorys/user_repo.dart';
 import 'package:meditation_app/route_generator.dart';
 import 'package:meditation_app/src/screens/loginAndSignup/login_screen.dart';
+import 'package:meditation_app/src/screens/loginAndSignup/register_screen.dart';
 import 'package:meditation_app/src/screens/mainScreens/main_screen.dart';
 import 'package:provider/provider.dart';
 import 'blocs/authBloc/authentication_bloc.dart';
@@ -74,11 +74,11 @@ class _AppState extends State<App> {
                 if (state is Uninitialized) {
                   return MeditationSplashScreen();
                 } else if (state is Unauthenticated) {
-                  return LoginScreen.main(userRepository: _userRepository);
+                  return LoginScreen(userRepository: _userRepository);
+                } else if (state is Register) {
+                  return RegisterScreen(userRepository: _userRepository);
                 } else {
-                  return MainScreen(
-                    startingAnimation: true,
-                  );
+                  return MainScreen();
                 }
               },
             ),

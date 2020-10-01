@@ -4,7 +4,6 @@ import 'package:meditation_app/blocs/authBloc/authentication_bloc.dart';
 import 'package:meditation_app/blocs/loginBloc/login_bloc.dart';
 import 'package:meditation_app/config/ui_icons.dart';
 import 'package:meditation_app/repositorys/user_repo.dart';
-import 'package:meditation_app/src/models/route_argument.dart';
 import 'package:meditation_app/src/widgets/google_login_button.dart';
 
 class LoginForm extends StatefulWidget {
@@ -27,7 +26,6 @@ class _LoginFormState extends State<LoginForm> {
   LoginBloc _loginBloc;
   bool _showPassword = false;
 
-  UserRepository get _userRepository => widget._userRepository;
 
   bool get isPopulated =>
       _emailController.text.isNotEmpty && _passwordController.text.isNotEmpty;
@@ -264,10 +262,8 @@ class _LoginFormState extends State<LoginForm> {
                   ),
                   FlatButton(
                     onPressed: () {
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                          '/registerScreen', (Route<dynamic> route) => false,
-                          arguments:
-                              RouteArgument(argumentsList: [_userRepository]));
+                      BlocProvider.of<AuthenticationBloc>(context)
+                          .add(UserRegister());
                     },
                     child: RichText(
                       text: TextSpan(
