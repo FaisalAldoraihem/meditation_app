@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:meditation_app/I10n/l10n.dart';
-import 'package:meditation_app/config/ui_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AboutScreen extends StatelessWidget {

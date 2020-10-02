@@ -72,13 +72,21 @@ class _AppState extends State<App> {
             home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
               builder: (BuildContext context, AuthenticationState state) {
                 if (state is Uninitialized) {
-                  return MeditationSplashScreen();
+                  return AnimatedSwitcher(
+                      duration: Duration(milliseconds: 350),
+                      child: MeditationSplashScreen());
                 } else if (state is Unauthenticated) {
-                  return LoginScreen(userRepository: _userRepository);
+                  return AnimatedSwitcher(
+                      duration: Duration(milliseconds: 350),
+                      child: LoginScreen(userRepository: _userRepository));
                 } else if (state is Register) {
-                  return RegisterScreen(userRepository: _userRepository);
+                  return AnimatedSwitcher(
+                      duration: Duration(milliseconds: 350),
+                      child: RegisterScreen(userRepository: _userRepository));
                 } else {
-                  return MainScreen();
+                  return AnimatedSwitcher(
+                      duration: Duration(milliseconds: 350),
+                      child: MainScreen());
                 }
               },
             ),

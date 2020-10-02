@@ -4,6 +4,8 @@ import 'package:meditation_app/I10n/l10n.dart';
 import 'package:meditation_app/config/ui_icons.dart';
 import 'package:meditation_app/constants/preset_timers.dart';
 import 'package:meditation_app/constants/settings.dart';
+import 'package:meditation_app/page_routes.dart';
+import 'package:meditation_app/src/screens/exercise_selection_screen.dart';
 import 'package:meditation_app/src/widgets/settings_card.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart' as cupertino;
@@ -145,14 +147,19 @@ class _SelectionScreenState extends State<SelectionScreen>
                               Provider.of<MeditationModel>(context).isZenMode,
                         ),
                       ),
-                      SettingsCard(
-                        end: true,
-                        title: Text(
-                          S.of(context).breathingMeditationType,
-                          style: Theme.of(context).textTheme.subtitle1,
+                      GestureDetector(
+                        onTap: () => Navigator.of(context).push(PageRoutes.slide(
+                            () => ExerciseSelectionScreen(),
+                            milliseconds: 300)),
+                        child: SettingsCard(
+                          end: true,
+                          title: Text(
+                            S.of(context).breathingMeditationType,
+                            style: Theme.of(context).textTheme.subtitle1,
+                          ),
+                          leading: Icon(UiIcons.planet_earth),
+                          trailing: cupertino.Icon(Icons.arrow_right),
                         ),
-                        leading: Icon(UiIcons.planet_earth),
-                        trailing: cupertino.Icon(Icons.arrow_right),
                       ),
                     ],
                   ),

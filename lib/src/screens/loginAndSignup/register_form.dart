@@ -300,12 +300,6 @@ class _RegisterFormState extends State<RegisterForm> {
                             shape: StadiumBorder(),
                           ),
                           SizedBox(height: 50),
-                          Text(
-                            'Or using social media',
-                            style: Theme.of(context).textTheme.body1,
-                          ),
-                          SizedBox(height: 20),
-                          //todo social sign up
                         ],
                       ),
                     ),

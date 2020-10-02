@@ -60,7 +60,7 @@ class S {
 
   String get breathingMeditationType {
     return Intl.message(
-      'Type Of Meditation',
+      'Type Of Exercise',
       name: 'meditationType',
       desc: '',
       args: [],
