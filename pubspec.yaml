@@ -26,6 +26,9 @@ dependencies:
   google_fonts: ^1.0.0
   styled_widget: ^0.2.2
   url_launcher: ^5.7.2
+  assets_audio_player: ^2.0.10
+  tinycolor: ^1.0.2
+
   flutter_localizations:
     sdk: flutter
   intl: ^0.16.0

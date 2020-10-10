@@ -6,6 +6,7 @@ import 'package:meditation_app/constants/preset_timers.dart';
 import 'package:meditation_app/constants/settings.dart';
 import 'package:meditation_app/page_routes.dart';
 import 'package:meditation_app/src/screens/exercise_selection_screen.dart';
+import 'package:meditation_app/src/screens/mainScreens/meditation_screen.dart';
 import 'package:meditation_app/src/widgets/settings_card.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart' as cupertino;
@@ -148,9 +149,9 @@ class _SelectionScreenState extends State<SelectionScreen>
                         ),
                       ),
                       GestureDetector(
-                        onTap: () => Navigator.of(context).push(PageRoutes.slide(
-                            () => ExerciseSelectionScreen(),
-                            milliseconds: 300)),
+                        onTap: () => Navigator.of(context).push(
+                            PageRoutes.slide(() => ExerciseSelectionScreen(),
+                                milliseconds: 300)),
                         child: SettingsCard(
                           end: true,
                           title: Text(
@@ -178,7 +179,9 @@ class _SelectionScreenState extends State<SelectionScreen>
                     ),
                     color: Theme.of(context).accentColor,
                     onPressed: () {
-                      //Todo meditate b
+                      Navigator.of(context).push(PageRoutes.fade(
+                          () => MeditationScreen(),
+                          milliseconds: 300));
                     },
                     child: Text(
                       S.of(context).beginButton.toUpperCase(),
