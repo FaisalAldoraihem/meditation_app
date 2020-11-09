@@ -9,6 +9,12 @@ class LocalNotifications {
   IOSInitializationSettings initializationSettingsIOS;
   InitializationSettings initializationSettings;
   NotificationAppLaunchDetails notificationAppLaunchDetails;
+  final NotificationDetails _details = NotificationDetails(
+      android: AndroidNotificationDetails(
+    '1',
+    'Meditation',
+    'Meditation App Channel',
+  ));
 
   void setUpNotifications() async {
     notificationAppLaunchDetails =
@@ -33,28 +39,13 @@ class LocalNotifications {
     await flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
-  tz.TZDateTime _nextInstanceOfTenAM() {
-    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
-    tz.TZDateTime scheduledDate =
-        tz.TZDateTime(tz.local, now.year, now.month, now.day, 10);
-    if (scheduledDate.isBefore(now)) {
-      scheduledDate = scheduledDate.add(const Duration(days: 1));
-    }
-    return scheduledDate;
-  }
-
   Future<void> _scheduleDailyTenAMNotification() async {
     await flutterLocalNotificationsPlugin.zonedSchedule(
         0,
         'daily scheduled notification title',
         'daily scheduled notification body',
         _nextInstanceOfTenAM(),
-        const NotificationDetails(
-          android: AndroidNotificationDetails(
-              'daily notification channel id',
-              'daily notification channel name',
-              'daily notification description'),
-        ),
+        _details,
         androidAllowWhileIdle: true,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
@@ -67,12 +58,7 @@ class LocalNotifications {
         'weekly scheduled notification title',
         'weekly scheduled notification body',
         _nextInstanceOfTenAM(),
-        const NotificationDetails(
-          android: AndroidNotificationDetails(
-              'weekly notification channel id',
-              'weekly notification channel name',
-              'weekly notificationdescription'),
-        ),
+        _details,
         androidAllowWhileIdle: true,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
@@ -88,5 +74,36 @@ class LocalNotifications {
           badge: true,
           sound: true,
         );
+  }
+
+  tz.TZDateTime _nextInstanceOfTenAM() {
+    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+    tz.TZDateTime scheduledDate =
+        tz.TZDateTime(tz.local, now.year, now.month, now.day, 10);
+    if (scheduledDate.isBefore(now)) {
+      scheduledDate = scheduledDate.add(const Duration(days: 1));
+    }
+    return scheduledDate;
+  }
+
+  tz.TZDateTime setNotificationWithDate(int day, int hour, int minute) {
+    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+    tz.TZDateTime scheduledDate =
+        tz.TZDateTime(tz.local, now.year, now.month, day, hour, minute);
+    /*if (scheduledDate.isBefore(now)) {
+      scheduledDate = scheduledDate.add(const Duration(days: 1));
+    }*/
+    return scheduledDate;
+  }
+
+  Future<void> _createNotificationChannel() async {
+    await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        .createNotificationChannel(const AndroidNotificationChannel(
+          '1',
+          'Meditation',
+          'Meditation App Channel',
+        ));
   }
 }
