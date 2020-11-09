@@ -5,6 +5,7 @@ import 'package:meditation_app/blocs/loginBloc/login_bloc.dart';
 import 'package:meditation_app/config/ui_icons.dart';
 import 'package:meditation_app/repositorys/user_repo.dart';
 import 'package:meditation_app/src/widgets/google_login_button.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class LoginForm extends StatefulWidget {
   final UserRepository _userRepository;
@@ -21,11 +22,13 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _passwordResetController =
+      TextEditingController();
+
   final FocusNode _emailFocus = FocusNode();
   final FocusNode _passFocus = FocusNode();
   LoginBloc _loginBloc;
   bool _showPassword = false;
-
 
   bool get isPopulated =>
       _emailController.text.isNotEmpty && _passwordController.text.isNotEmpty;
@@ -217,7 +220,7 @@ class _LoginFormState extends State<LoginForm> {
                             SizedBox(height: 20),
                             FlatButton(
                               onPressed: () {
-                                //Todo forgot password
+                                _alert(context, state);
                               },
                               child: Text(
                                 'Forgot your password ?',
@@ -320,5 +323,64 @@ class _LoginFormState extends State<LoginForm> {
       BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
     currentFocus.unfocus();
     FocusScope.of(context).requestFocus(nextFocus);
+  }
+
+  Future<bool> _alert(context, state) {
+    return Alert(
+        context: context,
+        title: 'Reset',
+        content: Column(
+          children: [
+            TextFormField(
+              style: TextStyle(color: Theme.of(context).accentColor),
+              keyboardType: TextInputType.emailAddress,
+              autovalidate: true,
+              autocorrect: false,
+              validator: (_) {
+                return !state.isEmailValid ? 'Invalid Email' : null;
+              },
+              textInputAction: TextInputAction.done,
+              controller: _passwordResetController,
+              decoration: InputDecoration(
+                hintText: 'Email Address',
+                hintStyle: Theme.of(context).textTheme.body1.merge(
+                      TextStyle(color: Theme.of(context).accentColor),
+                    ),
+                enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                        color: Theme.of(context).accentColor.withOpacity(0.2))),
+                focusedBorder: UnderlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Theme.of(context).accentColor)),
+                prefixIcon: Icon(
+                  UiIcons.envelope,
+                  color: Theme.of(context).accentColor,
+                ),
+              ),
+            ),
+          ],
+        ),
+        buttons: [
+          DialogButton(
+            child: Text('Send Reset Email'),
+            onPressed: () {
+              BlocProvider.of<AuthenticationBloc>(context)
+                  .add(Reset(email: _passwordResetController.text));
+              Scaffold.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  SnackBar(
+                    content: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Email Sent'),
+                      ],
+                    ),
+                  ),
+                );
+              Navigator.pop(context);
+            },
+          )
+        ]).show();
   }
 }

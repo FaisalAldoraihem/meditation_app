@@ -38,3 +38,12 @@ class UserLogin extends AuthenticationEvent {
   @override
   List<Object> get props => throw UnimplementedError();
 }
+
+class Reset extends AuthenticationEvent {
+  final String email;
+  Reset({this.email});
+  @override
+  String toString() => 'LoggedOut';
+  @override
+  List<Object> get props => throw UnimplementedError();
+}

@@ -4,7 +4,6 @@ import 'package:meditation_app/blocs/authBloc/authentication_bloc.dart';
 import 'package:meditation_app/blocs/registerBloc/register_bloc.dart';
 import 'package:meditation_app/config/ui_icons.dart';
 import 'package:meditation_app/repositorys/user_repo.dart';
-import 'package:meditation_app/src/models/route_argument.dart';
 
 class RegisterForm extends StatefulWidget {
   final UserRepository _userRepository;
@@ -18,7 +17,6 @@ class RegisterForm extends StatefulWidget {
 }
 
 class _RegisterFormState extends State<RegisterForm> {
-  bool _showPassword = false;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _passwordConfirmController =
@@ -27,8 +25,8 @@ class _RegisterFormState extends State<RegisterForm> {
   final FocusNode _passFocus = FocusNode();
   final FocusNode _confirmFocus = FocusNode();
 
+  bool _showPassword = false;
   RegisterBloc _registerBloc;
-
   bool get isPopulated =>
       _emailController.text.isNotEmpty && _passwordController.text.isNotEmpty;
 

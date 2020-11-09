@@ -28,6 +28,8 @@ dependencies:
   url_launcher: ^5.7.2
   assets_audio_player: ^2.0.10
   tinycolor: ^1.0.2
+  rflutter_alert: ^1.1.0
+  flutter_local_notifications: ^3.0.1+2
 
   flutter_localizations:
     sdk: flutter

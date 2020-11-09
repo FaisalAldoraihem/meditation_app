@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meditation_app/I10n/l10n.dart';
 import 'package:meditation_app/constants/settings.dart';
+import 'package:meditation_app/repositorys/local_notifications.dart';
 import 'package:meditation_app/repositorys/user_repo.dart';
 import 'package:meditation_app/route_generator.dart';
 import 'package:meditation_app/src/screens/loginAndSignup/login_screen.dart';
@@ -14,12 +17,25 @@ import 'blocs/authBloc/authentication_bloc.dart';
 import 'package:meditation_app/blocs/simple_bloc_delegate.dart';
 import 'package:meditation_app/config/app_config.dart' as config;
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 import 'src/screens/splash_screen.dart';
+
+const MethodChannel platform = MethodChannel('meditation.dev/meditate');
+final LocalNotifications localNotifications = LocalNotifications();
+
+Future<void> _configureLocalTimeZone() async {
+  tz.initializeTimeZones();
+  final String timeZoneName = await platform.invokeMethod('getTimeZoneName');
+  tz.setLocalLocation(tz.getLocation(timeZoneName));
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await _configureLocalTimeZone();
+  //localNotifications.setupNotification(); ?
   Bloc.observer = SimpleBlocDelegate();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) {

@@ -41,3 +41,4 @@ class Register extends AuthenticationState {
   @override
   List<Object> get props => throw UnimplementedError();
 }
+

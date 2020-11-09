@@ -33,6 +33,8 @@ class AuthenticationBloc
       yield Register();
     } else if (event is UserLogin) {
       yield Unauthenticated();
+    } else if (event is Reset) {
+      _userRepository.resetPassword(event.email);
     }
   }
 
