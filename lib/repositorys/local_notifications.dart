@@ -39,7 +39,7 @@ class LocalNotifications {
     await flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
-  Future<void> _scheduleDailyTenAMNotification() async {
+  Future<void> scheduleDailyTenAMNotification() async {
     await flutterLocalNotificationsPlugin.zonedSchedule(
         0,
         'daily scheduled notification title',
@@ -52,7 +52,7 @@ class LocalNotifications {
         matchDateTimeComponents: DateTimeComponents.time);
   }
 
-  Future<void> _scheduleWeeklyTenAMNotification() async {
+  Future<void> scheduleWeeklyTenAMNotification() async {
     await flutterLocalNotificationsPlugin.zonedSchedule(
         0,
         'weekly scheduled notification title',

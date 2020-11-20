@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:meditation_app/constants/settings.dart';
 import 'package:meditation_app/src/models/meditation_exercise.dart';
 import 'package:meditation_app/src/widgets/meditation_card.dart';
+import 'package:provider/provider.dart';
 
 class ExerciseDetails extends StatelessWidget {
   final MeditationExercise _meditationExercise;
@@ -62,7 +64,11 @@ class ExerciseDetails extends StatelessWidget {
                 ),
               ],
             ),
-            onPressed: () {}),
+            onPressed: () {
+              Provider.of<MeditationModel>(context, listen: false).exercise =
+                  _meditationExercise;
+              Navigator.pop(context);
+            }),
       ),
       body: Container(
         constraints: BoxConstraints.expand(),

@@ -1,9 +1,12 @@
+import 'package:flutter_rounded_date_picker/rounded_picker.dart';
 import 'package:meditation_app/config/app_config.dart' as AppTheme;
 import 'package:flutter/material.dart';
+import 'package:meditation_app/constants/settings.dart';
 import 'package:meditation_app/src/screens/about_screen.dart';
 import 'package:meditation_app/src/screens/mainScreens/selection_screen.dart';
 import 'package:meditation_app/src/widgets/drawer/drawer.dart';
 import 'package:meditation_app/src/widgets/drawer/drawer_user_con.dart';
+import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -14,6 +17,8 @@ class _MainScreenState extends State<MainScreen> {
   Widget screenView;
   DrawerIndex drawerIndex;
   AnimationController sliderAnimationController;
+  DateTime newDateTime;
+  TimeOfDay timePicked;
 
   @override
   void initState() {
@@ -30,6 +35,23 @@ class _MainScreenState extends State<MainScreen> {
         top: false,
         bottom: false,
         child: Scaffold(
+          floatingActionButton: FloatingActionButton(
+            child: Icon(Icons.alarm),
+            onPressed: () async {
+              newDateTime = await showRoundedDatePicker(
+                context: context,
+                initialDate: DateTime.now(),
+                firstDate: DateTime(DateTime.now().year - 1),
+                lastDate: DateTime(DateTime.now().year + 1),
+                borderRadius: 16,
+              );
+              timePicked = await showRoundedTimePicker(
+                context: context,
+                initialTime: TimeOfDay.now(),
+              );
+              _setNotification();
+            },
+          ),
           backgroundColor: AppTheme.Colors().notWhite(1),
           body: DrawerUserController(
             screenIndex: drawerIndex,
@@ -65,6 +87,15 @@ class _MainScreenState extends State<MainScreen> {
           screenView = AboutScreen();
         });
       }
+    }
+  }
+
+  void _setNotification() {
+    if (newDateTime != null && timePicked != null) {
+      Provider.of<MeditationModel>(context, listen: false)
+          .localNotifications
+          .setNotificationWithDate(
+              newDateTime.day, timePicked.hour, timePicked.minute);
     }
   }
 }

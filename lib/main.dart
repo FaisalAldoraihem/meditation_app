@@ -35,7 +35,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await _configureLocalTimeZone();
-  //localNotifications.setupNotification(); ?
+  localNotifications.setUpNotifications();
   Bloc.observer = SimpleBlocDelegate();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) {
@@ -63,7 +63,7 @@ class _AppState extends State<App> {
     return BlocProvider(
         create: (BuildContext context) => _authenticationBloc,
         child: ChangeNotifierProvider(
-          create: (_) => MeditationModel(),
+          create: (_) => MeditationModel(localNotifications),
           child: MaterialApp(
             title: 'Breath',
             localizationsDelegates: [S.delegate],
