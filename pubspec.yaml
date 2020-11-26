@@ -31,6 +31,7 @@ dependencies:
   rflutter_alert: ^1.1.0
   flutter_local_notifications: ^3.0.1+2
   flutter_rounded_date_picker: ^1.0.5+1
+  flutter_native_timezone: ^1.0.4
 
   flutter_localizations:
     sdk: flutter
@@ -38,9 +39,16 @@ dependencies:
   provider: ^4.0.5
 
 dev_dependencies:
+  flutter_launcher_icons: "^0.7.3"
   flutter_test:
     sdk: flutter
   intl_translation: ^0.17.9
+
+flutter_icons:
+  ios: true
+  android: true
+  image_path_ios: "assets/cat.jpg"
+  image_path_android: "assets/cat.jpg"
 
 flutter:
   uses-material-design: true

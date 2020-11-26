@@ -4,11 +4,14 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class LocalNotifications {
+  LocalNotifications(this.flutterLocalNotificationsPlugin);
+
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   AndroidInitializationSettings initializationSettingsAndroid;
   IOSInitializationSettings initializationSettingsIOS;
   InitializationSettings initializationSettings;
   NotificationAppLaunchDetails notificationAppLaunchDetails;
+
   final NotificationDetails _details = NotificationDetails(
       android: AndroidNotificationDetails(
     '1',
@@ -16,13 +19,13 @@ class LocalNotifications {
     'Meditation App Channel',
   ));
 
-  void setUpNotifications() async {
+  Future<void> setUpNotifications() async {
     notificationAppLaunchDetails =
         await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
 
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
-    initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
+    initializationSettingsAndroid = AndroidInitializationSettings('cat');
 
     initializationSettingsIOS = IOSInitializationSettings(
       requestSoundPermission: false,
@@ -86,14 +89,23 @@ class LocalNotifications {
     return scheduledDate;
   }
 
-  tz.TZDateTime setNotificationWithDate(int day, int hour, int minute) {
+  void setNotificationWithDate(int day, int hour, int minute) {
     final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
     tz.TZDateTime scheduledDate =
         tz.TZDateTime(tz.local, now.year, now.month, day, hour, minute);
     /*if (scheduledDate.isBefore(now)) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }*/
-    return scheduledDate;
+
+    flutterLocalNotificationsPlugin.zonedSchedule(
+        0,
+        'Don\'t forget to meditate beb',
+        'Hell yea beb',
+        scheduledDate,
+        _details,
+        androidAllowWhileIdle: true,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime);
   }
 
   Future<void> _createNotificationChannel() async {
