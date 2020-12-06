@@ -39,6 +39,19 @@ class ExerciseDetails extends StatelessWidget {
                 color: Color(0xff00c6ff)),
             Text(_meditationExercise.description,
                 style: Theme.of(context).textTheme.bodyText1),
+            ListView.builder(
+              itemCount: _meditationExercise.instructions.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  leading: Container(
+                      decoration: new BoxDecoration(
+                    color: Colors.black,
+                    shape: BoxShape.circle,
+                  )),
+                  title: Text(_meditationExercise.instructions[index]),
+                );
+              },
+            )
           ],
         ),
       );

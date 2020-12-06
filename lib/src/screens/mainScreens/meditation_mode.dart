@@ -12,6 +12,9 @@ import 'package:meditation_app/src/widgets/meditation_animation.dart';
 import 'package:meditation_app/utils/extensions.dart';
 import 'package:styled_widget/styled_widget.dart';
 
+import '../../../utils/utils.dart';
+import '../../models/quote.dart';
+
 class MeditationMode extends StatefulWidget {
   final Duration duration;
   final bool zenMode;
@@ -94,10 +97,30 @@ class _MeditationModeState extends State<MeditationMode> {
 
   @override
   Widget build(BuildContext context) {
+    Quote quote = getQuote(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
+        Column(
+          children: [
+            Text(
+              '“${quote.body}”',
+              style: Theme.of(context)
+                  .textTheme
+                  .headline6
+                  .copyWith(fontStyle: FontStyle.italic),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 12.0),
+            Text(
+              quote.author,
+              textAlign: TextAlign.right,
+              style: Theme.of(context).textTheme.subtitle1,
+            ),
+            SizedBox(height: 10.0),
+          ],
+        ),
         widget.zenMode
             ? Expanded(child: MeditationAnimation())
             : Expanded(

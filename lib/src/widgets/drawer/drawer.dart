@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meditation_app/blocs/authBloc/authentication_bloc.dart';
 import 'package:meditation_app/config/app_config.dart' as AppTheme;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeDrawer extends StatefulWidget {
   final AnimationController iconAnimationController;
@@ -20,14 +21,15 @@ class HomeDrawer extends StatefulWidget {
 
 class _HomeDrawerState extends State<HomeDrawer> {
   List<DrawerList> drawerList;
-
+  SharedPreferences prefs;
   @override
   void initState() {
     setDrawerListArray();
     super.initState();
   }
 
-  void setDrawerListArray() {
+  void setDrawerListArray() async {
+    prefs = await SharedPreferences.getInstance();
     drawerList = [
       DrawerList(
         index: DrawerIndex.HOME,
@@ -39,6 +41,10 @@ class _HomeDrawerState extends State<HomeDrawer> {
         labelName: 'About Us',
         icon: Icon(Icons.info),
       ),
+      DrawerList(
+          index: DrawerIndex.Change,
+          labelName: 'Change your Display Name!',
+          icon: Icon(Icons.info))
     ];
   }
 
@@ -98,7 +104,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
                   Padding(
                     padding: const EdgeInsets.only(top: 8, left: 4),
                     child: Text(
-                      "Ya Beb",
+                      prefs.getString('displayName'),
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: Colors.white,
@@ -168,7 +174,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
         splashColor: Colors.grey.withOpacity(0.1),
         highlightColor: Colors.transparent,
         onTap: () {
-          navigationtoScreen(listData.index);
+          navigationToScreen(listData.index);
         },
         child: Stack(
           children: <Widget>[
@@ -263,15 +269,20 @@ class _HomeDrawerState extends State<HomeDrawer> {
     );
   }
 
-  void navigationtoScreen(DrawerIndex indexScreen) async {
+  void navigationToScreen(DrawerIndex indexScreen) async {
     widget.callBackIndex(indexScreen);
+  }
+
+  void changeName(){
+
+  }
+
+  void setName(String name) async{
+    await prefs.setString('displayName', name);
   }
 }
 
-enum DrawerIndex {
-  HOME,
-  About,
-}
+enum DrawerIndex { HOME, About, Change }
 
 class DrawerList {
   String labelName;

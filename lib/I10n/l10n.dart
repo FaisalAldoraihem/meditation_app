@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'file:///D:/FlutterProjects/meditation_app/lib/I10n/messages_all.dart';
+
+import 'messages_all.dart';
 
 class S {
   S();
@@ -116,6 +117,15 @@ class S {
     return Intl.message(
       'Contact',
       name: 'contactButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get rateButton {
+    return Intl.message(
+      'Rate The App',
+      name: 'rateButton',
       desc: '',
       args: [],
     );

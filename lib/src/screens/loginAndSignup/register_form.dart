@@ -179,7 +179,7 @@ class _RegisterFormState extends State<RegisterForm> {
                             autovalidate: true,
                             validator: (_) {
                               return !state.isPasswordValid
-                                  ? 'Invalid Password'
+                                  ? 'Invalid Password \n(Minimum eight characters, at least one letter and one number)'
                                   : null;
                             },
                             focusNode: _passFocus,

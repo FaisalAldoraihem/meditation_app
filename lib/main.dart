@@ -15,6 +15,8 @@ import 'package:meditation_app/src/screens/loginAndSignup/login_screen.dart';
 import 'package:meditation_app/src/screens/loginAndSignup/register_screen.dart';
 import 'package:meditation_app/src/screens/mainScreens/main_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:rxdart/rxdart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'blocs/authBloc/authentication_bloc.dart';
 import 'package:meditation_app/blocs/simple_bloc_delegate.dart';
 import 'package:meditation_app/config/app_config.dart' as config;
@@ -30,17 +32,27 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 final LocalNotifications localNotifications =
     LocalNotifications(flutterLocalNotificationsPlugin);
 
+SharedPreferences _preferences;
+
 Future<void> _configureLocalTimeZone() async {
   tz.initializeTimeZones();
   final String currentTimeZone = await FlutterNativeTimezone.getLocalTimezone();
   tz.setLocalLocation(tz.getLocation(currentTimeZone));
 }
 
+void setDisplayName() {
+  if (_preferences.containsKey('displayName')) return;
+
+  _preferences.setString('displayName', 'yabeb');
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  _preferences = await SharedPreferences.getInstance();
   await Firebase.initializeApp();
   await _configureLocalTimeZone();
   await localNotifications.setUpNotifications();
+  setDisplayName();
   Bloc.observer = SimpleBlocDelegate();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) {
