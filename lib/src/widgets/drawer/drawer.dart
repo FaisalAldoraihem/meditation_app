@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meditation_app/blocs/authBloc/authentication_bloc.dart';
 import 'package:meditation_app/config/app_config.dart' as AppTheme;
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeDrawer extends StatefulWidget {
@@ -22,14 +23,21 @@ class HomeDrawer extends StatefulWidget {
 class _HomeDrawerState extends State<HomeDrawer> {
   List<DrawerList> drawerList;
   SharedPreferences prefs;
+  String displayName;
+
   @override
   void initState() {
     setDrawerListArray();
+    getInitState();
     super.initState();
   }
 
-  void setDrawerListArray() async {
-    prefs = await SharedPreferences.getInstance();
+  Future<bool> getInitState() async {
+    displayName = await getName();
+    return true;
+  }
+
+  void setDrawerListArray() {
     drawerList = [
       DrawerList(
         index: DrawerIndex.HOME,
@@ -104,7 +112,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
                   Padding(
                     padding: const EdgeInsets.only(top: 8, left: 4),
                     child: Text(
-                      prefs.getString('displayName'),
+                      displayName,
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: Colors.white,
@@ -174,7 +182,9 @@ class _HomeDrawerState extends State<HomeDrawer> {
         splashColor: Colors.grey.withOpacity(0.1),
         highlightColor: Colors.transparent,
         onTap: () {
-          navigationToScreen(listData.index);
+          listData.index == DrawerIndex.Change
+              ? changeName()
+              : navigationToScreen(listData.index);
         },
         child: Stack(
           children: <Widget>[
@@ -185,17 +195,6 @@ class _HomeDrawerState extends State<HomeDrawer> {
                   Container(
                     width: 6.0,
                     height: 46.0,
-                    // decoration: BoxDecoration(
-                    //   color: widget.screenIndex == listData.index
-                    //       ? Colors.white
-                    //       : Colors.transparent,
-                    //   borderRadius:  BorderRadius.only(
-                    //     topLeft: Radius.circular(0),
-                    //     topRight: Radius.circular(16),
-                    //     bottomLeft: Radius.circular(0),
-                    //     bottomRight: Radius.circular(16),
-                    //   ),
-                    // ),
                   ),
                   Padding(
                     padding: EdgeInsets.all(4.0),
@@ -273,12 +272,62 @@ class _HomeDrawerState extends State<HomeDrawer> {
     widget.callBackIndex(indexScreen);
   }
 
-  void changeName(){
-
+  void changeName() {
+    Alert(
+      context: context,
+      type: AlertType.info,
+      title: "Change your name!",
+      content: TextFormField(
+        style: TextStyle(color: Theme.of(context).accentColor),
+        keyboardType: TextInputType.emailAddress,
+        autocorrect: false,
+        textInputAction: TextInputAction.done,
+        onChanged: (string) => displayName = string,
+        decoration: InputDecoration(
+          hintText: 'Name',
+          hintStyle: Theme.of(context).textTheme.body1.merge(
+                TextStyle(color: Theme.of(context).accentColor),
+              ),
+          enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                  color: Theme.of(context).accentColor.withOpacity(0.2))),
+          focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Theme.of(context).accentColor)),
+        ),
+      ),
+      buttons: [
+        DialogButton(
+          child: Text(
+            "Cancel",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () => setName(displayName),
+          color: Color.fromRGBO(0, 179, 134, 1.0),
+        ),
+        DialogButton(
+          child: Text(
+            "Submit",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () => Navigator.pop(context),
+          gradient: LinearGradient(colors: [
+            Color.fromRGBO(116, 116, 191, 1.0),
+            Color.fromRGBO(52, 138, 199, 1.0)
+          ]),
+        )
+      ],
+    ).show();
   }
 
-  void setName(String name) async{
+  Future<String> getName() async {
+    if (prefs == null) prefs = await SharedPreferences.getInstance();
+
+    return prefs.getString('displayName');
+  }
+
+  void setName(String name) async {
     await prefs.setString('displayName', name);
+    Navigator.pop(context);
   }
 }
 

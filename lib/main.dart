@@ -48,10 +48,10 @@ void setDisplayName() {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  _preferences = await SharedPreferences.getInstance();
   await Firebase.initializeApp();
   await _configureLocalTimeZone();
   await localNotifications.setUpNotifications();
+  _preferences = await SharedPreferences.getInstance();
   setDisplayName();
   Bloc.observer = SimpleBlocDelegate();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])

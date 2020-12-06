@@ -31,6 +31,7 @@ class _MeditationModeState extends State<MeditationMode> {
   Timer _timer;
   Duration _elapsedTime;
   String _display = 'Be at peace';
+  Quote quote;
 
   void _playSound() {
     if (widget.playSounds) {
@@ -50,6 +51,9 @@ class _MeditationModeState extends State<MeditationMode> {
     _timer = Timer.periodic(Duration(milliseconds: 10), (Timer t) {
       setState(() {
         var diff = (_elapsedTime - _stopwatch.elapsed);
+        if (diff >= Duration(minutes: 4) + Duration(seconds: 59))
+          quote = getQuote(context);
+
         _display = diff.clockFmt();
         if (diff.inMilliseconds <= 0) {
           _playSound();
@@ -97,7 +101,6 @@ class _MeditationModeState extends State<MeditationMode> {
 
   @override
   Widget build(BuildContext context) {
-    Quote quote = getQuote(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
