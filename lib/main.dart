@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +14,6 @@ import 'package:meditation_app/src/screens/loginAndSignup/login_screen.dart';
 import 'package:meditation_app/src/screens/loginAndSignup/register_screen.dart';
 import 'package:meditation_app/src/screens/mainScreens/main_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'blocs/authBloc/authentication_bloc.dart';
 import 'package:meditation_app/blocs/simple_bloc_delegate.dart';

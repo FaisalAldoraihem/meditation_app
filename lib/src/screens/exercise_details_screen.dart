@@ -39,6 +39,26 @@ class ExerciseDetails extends StatelessWidget {
                 color: Color(0xff00c6ff)),
             Text(_meditationExercise.description,
                 style: Theme.of(context).textTheme.bodyText1),
+            SizedBox(
+              height: 10,
+            ),
+            Flexible(
+              child: ListView.builder(
+                itemBuilder: (context, count) {
+                  return Row(
+                    children: [
+                      Text('•', style: Theme.of(context).textTheme.bodyText1),
+                      Expanded(
+                          child: Text(
+                        _meditationExercise.instructions[count],
+                        style: Theme.of(context).textTheme.bodyText1,
+                      )),
+                    ],
+                  );
+                },
+                itemCount: _meditationExercise.instructions.length,
+              ),
+            )
           ],
         ),
       );
@@ -86,6 +106,18 @@ class ExerciseDetails extends StatelessWidget {
             _getContent(),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class MyBullet extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return new Container(
+      decoration: new BoxDecoration(
+        color: Colors.black,
+        shape: BoxShape.circle,
       ),
     );
   }

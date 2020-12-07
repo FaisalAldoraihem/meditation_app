@@ -40,81 +40,16 @@ class CompletionScreen extends StatelessWidget {
                   style: Theme.of(context).textTheme.subtitle1,
                 ),
                 SizedBox(height: 36.0),
-                Row(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 21.0),
-                      child: FlatButton(
+                Flexible(
+                  child: Row(
+                    children: [
+                      FlatButton(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(68.0)),
                         color: Theme.of(context).accentColor,
                         onPressed: () {
-                          Navigator.of(context).pushReplacement(PageRoutes.fade(
-                            () => App(),
-                            milliseconds: 800,
-                          ));
-                        },
-                        child: Text(
-                          S.of(context).rateButton.toUpperCase(),
-                          style: GoogleFonts.varelaRound(
-                            color: Color(0xFFE7E7E8),
-                            fontWeight: FontWeight.w600,
-                            fontSize: 18.0,
-                          ),
-                        ).padding(all: 18.0),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 21.0),
-                      child: FlatButton(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(68.0)),
-                        color: Theme.of(context).accentColor,
-                        onPressed: () {
-                          Alert(
-                            context: context,
-                            type: AlertType.info,
-                            title: "What do you rate our app?",
-                            content: RatingBar.builder(
-                              initialRating: 3,
-                              minRating: 1,
-                              direction: Axis.horizontal,
-                              allowHalfRating: true,
-                              itemCount: 5,
-                              itemPadding:
-                                  EdgeInsets.symmetric(horizontal: 4.0),
-                              itemBuilder: (context, _) => Icon(
-                                Icons.star,
-                                color: Colors.amber,
-                              ),
-                              onRatingUpdate: (rating) {
-                                print(rating);
-                              },
-                            ),
-                            buttons: [
-                              DialogButton(
-                                child: Text(
-                                  "Cancel",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 20),
-                                ),
-                                onPressed: () => Navigator.pop(context),
-                                color: Color.fromRGBO(0, 179, 134, 1.0),
-                              ),
-                              DialogButton(
-                                child: Text(
-                                  "Submit",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 20),
-                                ),
-                                onPressed: () => Navigator.pop(context),
-                                gradient: LinearGradient(colors: [
-                                  Color.fromRGBO(116, 116, 191, 1.0),
-                                  Color.fromRGBO(52, 138, 199, 1.0)
-                                ]),
-                              )
-                            ],
-                          ).show();
+                          Navigator.of(context)
+                              .popUntil((route) => route.isFirst);
                         },
                         child: Text(
                           S.of(context).homeButton.toUpperCase(),
@@ -125,8 +60,70 @@ class CompletionScreen extends StatelessWidget {
                           ),
                         ).padding(all: 18.0),
                       ),
-                    ),
-                  ],
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10.0),
+                        child: FlatButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(68.0)),
+                          color: Theme.of(context).accentColor,
+                          onPressed: () {
+                            Alert(
+                              context: context,
+                              type: AlertType.info,
+                              title: "What do you rate our app?",
+                              content: RatingBar.builder(
+                                initialRating: 3,
+                                minRating: 1,
+                                direction: Axis.horizontal,
+                                allowHalfRating: true,
+                                itemCount: 5,
+                                itemPadding:
+                                    EdgeInsets.symmetric(horizontal: 4.0),
+                                itemBuilder: (context, _) => Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                ),
+                                onRatingUpdate: (rating) {
+                                  print(rating);
+                                },
+                              ),
+                              buttons: [
+                                DialogButton(
+                                  child: Text(
+                                    "Cancel",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 20),
+                                  ),
+                                  onPressed: () => Navigator.pop(context),
+                                  color: Color.fromRGBO(0, 179, 134, 1.0),
+                                ),
+                                DialogButton(
+                                  child: Text(
+                                    "Submit",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 20),
+                                  ),
+                                  onPressed: () => Navigator.pop(context),
+                                  gradient: LinearGradient(colors: [
+                                    Color.fromRGBO(116, 116, 191, 1.0),
+                                    Color.fromRGBO(52, 138, 199, 1.0)
+                                  ]),
+                                )
+                              ],
+                            ).show();
+                          },
+                          child: Text(
+                            S.of(context).rateButton.toUpperCase(),
+                            style: GoogleFonts.varelaRound(
+                              color: Color(0xFFE7E7E8),
+                              fontWeight: FontWeight.w600,
+                              fontSize: 18.0,
+                            ),
+                          ).padding(all: 18.0),
+                        ),
+                      ),
+                    ],
+                  ),
                 )
               ],
             ).padding(horizontal: 48.0),

@@ -12,6 +12,7 @@ import 'package:meditation_app/src/widgets/meditation_animation.dart';
 import 'package:meditation_app/utils/extensions.dart';
 import 'package:styled_widget/styled_widget.dart';
 
+import '../../../main.dart';
 import '../../../utils/utils.dart';
 import '../../models/quote.dart';
 
@@ -82,8 +83,7 @@ class _MeditationModeState extends State<MeditationMode> {
     });
 
     if (cancelled) {
-      Navigator.of(context).pushReplacement(
-          PageRoutes.fade(() => MainScreen(), milliseconds: 450));
+      Navigator.of(context).popUntil((route) => route.isFirst);
     } else {
       Navigator.of(context).pushReplacement(
           PageRoutes.fade(() => CompletionScreen(), milliseconds: 800));
