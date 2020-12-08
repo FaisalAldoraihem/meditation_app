@@ -115,7 +115,7 @@ class S {
 
   String get contactButton {
     return Intl.message(
-      'Contact',
+      'Please give us your feedback ',
       name: 'contactButton',
       desc: '',
       args: [],
