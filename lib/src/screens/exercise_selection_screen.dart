@@ -24,7 +24,8 @@ class _ExerciseSelectionScreenState extends State<ExerciseSelectionScreen> {
               leading: IconButton(
                 icon: new Icon(Icons.arrow_back,
                     color: Theme.of(context).accentColor),
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () =>
+                    Navigator.of(context).popUntil((route) => route.isFirst),
               ),
             ),
           ];

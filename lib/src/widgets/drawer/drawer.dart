@@ -1,7 +1,9 @@
+import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meditation_app/blocs/authBloc/authentication_bloc.dart';
 import 'package:meditation_app/config/app_config.dart' as AppTheme;
+import 'package:meditation_app/utils/themes.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -24,7 +26,8 @@ class _HomeDrawerState extends State<HomeDrawer> {
   List<DrawerList> drawerList;
   SharedPreferences prefs;
   String displayName;
-
+  bool _theme = false;
+  IconData _light = Icons.lightbulb_outline;
   @override
   void initState() {
     setDrawerListArray();
@@ -145,30 +148,34 @@ class _HomeDrawerState extends State<HomeDrawer> {
             height: 1,
             color: AppTheme.Colors().accentColor(.6),
           ),
-          Column(
-            children: <Widget>[
-              ListTile(
-                title: Text(
-                  "Sign Out",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
-                    color: Colors.white,
+          Padding(
+            padding: const EdgeInsets.all(12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    _changeTheme();
+                  },
+                  child: Icon(
+                    _light,
+                    color: Theme.of(context).primaryColor,
+                    size: 30,
                   ),
-                  textAlign: TextAlign.left,
                 ),
-                trailing: Icon(
-                  Icons.power_settings_new,
-                  color: Colors.red,
+                GestureDetector(
+                  onTap: () {
+                    BlocProvider.of<AuthenticationBloc>(context)
+                        .add(LoggedOut());
+                  },
+                  child: Icon(
+                    Icons.power_settings_new,
+                    color: Theme.of(context).primaryColor,
+                    size: 30,
+                  ),
                 ),
-                onTap: () {
-                  BlocProvider.of<AuthenticationBloc>(context).add(LoggedOut());
-                },
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).padding.bottom,
-              )
-            ],
+              ],
+            ),
           ),
         ],
       ),
@@ -317,6 +324,24 @@ class _HomeDrawerState extends State<HomeDrawer> {
         )
       ],
     ).show();
+  }
+
+  void _changeTheme() {
+    setState(() {
+      if (_theme) {
+        ThemeItem item = ThemeItem.getThemes()[0];
+        DynamicTheme.of(context).setThemeData(item.themeData);
+        prefs.setString('dynTheme', item.slug);
+        _theme = !_theme;
+        _light = Icons.brightness_7;
+      } else {
+        ThemeItem item = ThemeItem.getThemes()[1];
+        prefs.setString('dynTheme', item.slug);
+        DynamicTheme.of(context).setThemeData(item.themeData);
+        _theme = !_theme;
+        _light = Icons.brightness_5;
+      }
+    });
   }
 
   Future<String> getName() async {

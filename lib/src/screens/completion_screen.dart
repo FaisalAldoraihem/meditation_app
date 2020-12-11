@@ -2,13 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:meditation_app/I10n/l10n.dart';
-import 'package:meditation_app/page_routes.dart';
 import 'package:meditation_app/src/models/quote.dart';
 import 'package:meditation_app/utils/utils.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:styled_widget/styled_widget.dart';
-
-import '../../main.dart';
 
 class CompletionScreen extends StatelessWidget {
   const CompletionScreen({Key key}) : super(key: key);

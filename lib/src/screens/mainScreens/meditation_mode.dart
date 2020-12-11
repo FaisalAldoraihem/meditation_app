@@ -6,13 +6,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:meditation_app/I10n/l10n.dart';
 import 'package:meditation_app/page_routes.dart';
 import 'package:meditation_app/src/screens/completion_screen.dart';
-import 'package:meditation_app/src/screens/mainScreens/main_screen.dart';
 import 'package:meditation_app/src/widgets/countdown_circle.dart';
 import 'package:meditation_app/src/widgets/meditation_animation.dart';
 import 'package:meditation_app/utils/extensions.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-import '../../../main.dart';
 import '../../../utils/utils.dart';
 import '../../models/quote.dart';
 
@@ -33,7 +31,7 @@ class _MeditationModeState extends State<MeditationMode> {
   Duration _elapsedTime;
   String _display = 'Be at peace';
   Quote quote;
-
+  bool gotQuote = false;
   void _playSound() {
     if (widget.playSounds) {
       final assetsAudioPlayer = AssetsAudioPlayer();
@@ -52,8 +50,11 @@ class _MeditationModeState extends State<MeditationMode> {
     _timer = Timer.periodic(Duration(milliseconds: 10), (Timer t) {
       setState(() {
         var diff = (_elapsedTime - _stopwatch.elapsed);
-        if (diff >= Duration(minutes: 4) + Duration(seconds: 59))
+
+        if (!gotQuote) {
           quote = getQuote(context);
+          gotQuote = true;
+        }
 
         _display = diff.clockFmt();
         if (diff.inMilliseconds <= 0) {
