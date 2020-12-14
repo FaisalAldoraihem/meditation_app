@@ -4,7 +4,7 @@ class Exercises {
   static final List exercises = [
     MeditationExercise(
         id: 1,
-        image: 'assets/cat.jpg',
+        image: 'assets/pursed lip breathing.jpg',
         title: 'Pursed lip breathing',
         description:
             'This simple breathing technique makes you slow down your pace of breathing by having you apply deliberate effort in each breath.',
@@ -16,7 +16,7 @@ class Exercises {
         ]),
     MeditationExercise(
         id: 2,
-        image: 'assets/cat.jpg',
+        image: 'assets/breath focus technique.png',
         title: 'Breath focus technique',
         description:
             'This deep breathing technique uses imagery or focus words and phrases.',
@@ -34,7 +34,7 @@ class Exercises {
         ]),
     MeditationExercise(
         id: 3,
-        image: 'assets/cat.jpg',
+        image: 'assets/Equal breathing.jpg',
         title: 'Equal breathing',
         description:
             'Equal breathing is known as sama vritti in Sanskrit. This breathing technique focuses on making your inhales and exhales the same length.',
@@ -47,7 +47,7 @@ class Exercises {
         ]),
     MeditationExercise(
         id: 4,
-        image: 'assets/cat.jpg',
+        image: 'assets/Resonant or coherent breathing.png',
         title: 'Resonant or coherent breathing',
         description:
             'Resonant breathing, also known as coherent breathing, is when you breathe at a rate of 5 full breaths per minute.',
@@ -58,7 +58,7 @@ class Exercises {
         ]),
     MeditationExercise(
         id: 5,
-        image: 'assets/cat.jpg',
+        image: 'assets/Deep breathing.png',
         title: 'Deep breathing',
         description:
             'Deep breathing helps to relieve shortness of breath by preventing air from getting trapped in your lungs.',
@@ -70,7 +70,7 @@ class Exercises {
         ]),
     MeditationExercise(
         id: 6,
-        image: 'assets/cat.jpg',
+        image: 'assets/Humming bee breath.png',
         title: 'Humming bee breath ',
         description:
             'The unique sensation of this yoga breathing practice helps to create instant calm and is especially soothing around your forehead.',
